@@ -1,26 +1,24 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, Suspense } from "react"
 import ActiveIntro from "./components/ActiveIntro"
 import ActiveDashboard from "./components/ActiveDashboard"
 import ActiveFooter from "./components/ActiveFooter"
 import ActiveNavBar from "./components/ActiveNavBar"
 import { motion, AnimatePresence } from "framer-motion"
-import { useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation"
 
+function ActiveLearningPageInner() {
+    const [started, setStarted] = useState(false)
+    const search = useSearchParams()
 
-export default function ActiveLearningPage() {
-    const [started, setStarted] = useState(false);
-    const search = useSearchParams();
     useEffect(() => {
-        const tab = search.get("tab");
+        const tab = search.get("tab")
         if (tab) {
-            // ensure dashboard shows and set initial segment
-            sessionStorage.setItem("ACTIVE_SECTION", tab);
-            setStarted(true);
+            sessionStorage.setItem("ACTIVE_SECTION", tab)
+            setStarted(true)
         }
-    }, [search]);
-
+    }, [search])
 
     return (
         <div className="min-h-screen bg-linear-to-br from-slate-900 via-purple-900 to-slate-950 text-white px-4 pb-24 pt-10">
@@ -59,7 +57,16 @@ export default function ActiveLearningPage() {
                     )}
                 </AnimatePresence>
             </div>
+
             <ActiveFooter />
         </div>
+    )
+}
+
+export default function ActiveLearningPage() {
+    return (
+        <Suspense fallback={null}>
+            <ActiveLearningPageInner />
+        </Suspense>
     )
 }
