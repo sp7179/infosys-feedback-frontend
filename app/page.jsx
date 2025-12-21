@@ -35,8 +35,8 @@ export default function Home() {
 
     return (
         <>
-        {success && <SuccessNotify message={success} />}
-        {error && <ErrorNotify message={error} />}
+        {success && <SuccessNotify message={success} clearMessage={setSuccess} />}
+        {error && <ErrorNotify message={error} clearMessage={setError} />}
         <div className="min-h-screen bg-linear-to-br from-slate-900 via-purple-900 to-slate-900 overflow-hidden">
             <Navbar />
 

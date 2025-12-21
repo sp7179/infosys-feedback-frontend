@@ -1,9 +1,13 @@
 "use client"
 
 import { useState } from "react"
+import SuccessNotify from "@/components/SuccessNotify";
+import ErrorNotify from "@/components/ErrorNotify";
 
 export default function DownloadButton({ visual }) {
     const [loading, setLoading] = useState(false)
+    const [success, setSuccess] = useState("");
+    const [error, setError] = useState("");
 
     const handleDownload = () => {
         if (!visual || !visual.result?.report_download) {
@@ -34,9 +38,18 @@ export default function DownloadButton({ visual }) {
         }
     }
 
+    const timeout = () => {
+        setTimeout(() => {
+            setSuccess("Download started!");
+        }, 3000);
+    };
+
     return (
+        <>
+        {success && <SuccessNotify message={success} clearMessage={setSuccess} />}
+        {error && <ErrorNotify message={error} clearMessage={setError} />}
         <button
-            onClick={handleDownload}
+                onClick={() => {  handleDownload() }}
             disabled={loading}
             className="px-6 py-2 bg-linear-to-r from-green-500 to-emerald-600 text-white font-semibold rounded-lg hover:shadow-lg hover:shadow-green-500/50 transition-all duration-300 disabled:opacity-50 flex items-center gap-2"
         >
@@ -50,5 +63,6 @@ export default function DownloadButton({ visual }) {
             </svg>
             {loading ? "Downloading..." : "Download CSV"}
         </button>
+        </>
     )
 }

@@ -6,12 +6,16 @@ import { motion, AnimatePresence } from "framer-motion"
 import ModelSelector from "./ModelSelector"
 import ProfileModal from "../../profile/components/ProfileModal"
 import SecurityModal from "../../profile/components/SecurityModal"
+import SuccessNotify from "@/components/SuccessNotify";
+import ErrorNotify from "@/components/ErrorNotify";
 
 export default function UploadNavbar() {
     const router = useRouter()
     const [userName, setUserName] = useState("")
     const [userid, setUserid] = useState("")
     const [showProfile, setShowProfile] = useState(false)
+    const [success, setSuccess] = useState("");
+    const [error, setError] = useState("");
     const [showSecurity, setShowSecurity] = useState(false)
     const [menuOpen, setMenuOpen] = useState(false)
     const menuRef = useRef(null)
@@ -54,6 +58,8 @@ export default function UploadNavbar() {
 
     return (
         <>
+        {success && <SuccessNotify message={success} clearMessage={setSuccess} />}
+        {error && <ErrorNotify message={error} clearMessage={setError} />}
             <nav
                 className={`bg-white/5 backdrop-blur-md border-b border-purple-500/20 sticky top-0 z-50 transition-all ${blurActive ? "opacity-60" : ""
                     }`}
@@ -136,6 +142,7 @@ export default function UploadNavbar() {
                                         {/* NEW: Active Learning entry */}
                                         <button
                                             onClick={() => {
+                                                setSuccess("Redirecting to Active Learning…")
                                                 router.push("/active-learning")
                                                 setMenuOpen(false)
                                             }}

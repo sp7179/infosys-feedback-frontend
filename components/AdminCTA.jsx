@@ -2,11 +2,20 @@
 
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
+import SuccessNotify from "@/components/SuccessNotify";
+import ErrorNotify from "@/components/ErrorNotify";
+import { useState } from "react";
 
 export default function AdminCTA() {
     const router = useRouter();
+    const [success, setSuccess] = useState("");
+    const [error, setError] = useState("");
 
     return (
+        <>
+            {success && <SuccessNotify message={success} clearMessage={setSuccess} />}
+            {error && <ErrorNotify message={error} clearMessage={setError} />}
+
         <div className="flex flex-col items-center mt-4 animate-slide-in-up" style={{ animationDelay: "0.45s" }}>
 
             {/* --- Admin Panel Button (Matches Get Started Style) --- */}
@@ -28,7 +37,7 @@ export default function AdminCTA() {
             >
                 <div className="absolute inset-0 bg-linear-to-br from-fuchsia-400/30 to-violet-500/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
 
-                <span className="relative flex items-center gap-2">
+                <span className="relative flex items-center gap-2" onClick={() =>{ setSuccess("Redirecting to Admin Panel...")}}>
                     Admin Panel
                     <svg
                         className="w-5 h-5 group-hover:translate-x-1 transition-transform"
@@ -53,6 +62,7 @@ export default function AdminCTA() {
             </motion.p>
 
         </div>
+        </>
     );
 
 }

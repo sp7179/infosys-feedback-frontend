@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation"
 import { useState } from "react"
 import SuccessNotify from "@/components/SuccessNotify";
 import ErrorNotify from "@/components/ErrorNotify";
+import { toast } from 'react-toastify';
 
 
 export default function UploadSuccess({ visual, onNewUpload }) { // ✅ Receive full visual object as prop
@@ -11,6 +12,8 @@ export default function UploadSuccess({ visual, onNewUpload }) { // ✅ Receive 
 
     const [success, setSuccess] = useState("");
     const [error, setError] = useState("");
+
+    
 
     // Handle "Upload Another" button
     const handleNewUpload = () => {
@@ -28,8 +31,8 @@ export default function UploadSuccess({ visual, onNewUpload }) { // ✅ Receive 
     return (
         <>
 
-        {success && <SuccessNotify message={success} />}
-        {error && <ErrorNotify message={error} />}
+        {success && <SuccessNotify message={success} clearMessage={setSuccess} />}
+        {error && <ErrorNotify message={error} clearMessage={setError} />}
 
         <div className="flex flex-col items-center justify-center py-20">
             <div className="mb-8 animate-bounce">
@@ -49,11 +52,16 @@ export default function UploadSuccess({ visual, onNewUpload }) { // ✅ Receive 
 
             <div className="flex gap-4">
                     <button
-                        onClick={() => handleViewVisualization() && setSuccess("Visualization Loaded Successfully!")}
+                        onClick={() => {
+                            setSuccess("Visualizing...");
+                            handleViewVisualization();
+                        }}
+
                         className="px-8 py-3 bg-linear-to-r from-purple-500 to-violet-600 text-white font-semibold rounded-lg hover:shadow-lg hover:shadow-purple-500/50 transition-all duration-300"
                     >
                         View Visualization
                     </button>
+                    
 
                 <button
                     onClick={handleNewUpload}
